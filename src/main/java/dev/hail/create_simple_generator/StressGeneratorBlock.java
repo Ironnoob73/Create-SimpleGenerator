@@ -63,7 +63,7 @@ public class StressGeneratorBlock extends DirectionalKineticBlock implements IBE
         notifyFanBlockEntity(worldIn, pos);
     }
     protected void notifyFanBlockEntity(LevelAccessor world, BlockPos pos) {
-        //withBlockEntityDo(world, pos, StressAcceptorEntity::blockInFrontChanged);
+        withBlockEntityDo(world, pos, StressGeneratorEntity::blockInFrontChanged);
     }
     @Override
     public BlockState updateAfterWrenched(BlockState newState, UseOnContext context) {
@@ -90,7 +90,7 @@ public class StressGeneratorBlock extends DirectionalKineticBlock implements IBE
 
     @Override
     public BlockEntityType<? extends StressGeneratorEntity> getBlockEntityType() {
-        return CreateSimpleGenerator.STRESS_ACCEPTOR_ENTITY.get();
+        return CreateSimpleGenerator.STRESS_GENERATOR_ENTITY.get();
     }
 
 }
