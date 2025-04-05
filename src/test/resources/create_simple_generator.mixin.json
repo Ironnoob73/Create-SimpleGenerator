@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.hail.create_simple_generator.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "create_simple_generator.refmap.json",
+  "mixins": [
+    "FlywheelBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

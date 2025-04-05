@@ -1,0 +1,6 @@
+{
+  "itemGroup.create_simple_generator": "机械动力：简单发电机",
+  "block.create_simple_generator.stress_generator": "应力发电机",
+  "create_simple_generator.configuration.generator_generates_energy_multiplier": "发电机产能倍率",
+  "create_simple_generator.configuration.generator_consumption_stress_multiplier": "发电机应力消耗倍率"
+}

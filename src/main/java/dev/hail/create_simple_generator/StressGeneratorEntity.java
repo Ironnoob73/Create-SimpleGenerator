@@ -21,11 +21,8 @@ public class StressGeneratorEntity extends KineticBlockEntity{
             energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().relative(face), face);
         }
         if (energyStorage == null) {
-            CreateSimpleGenerator.LOGGER.debug("NULL STORAGE");
             return;
         }
-        energyStorage.receiveEnergy((int) Math.abs(getSpeed()), false);
-    }
-    public void blockInFrontChanged() {
+        energyStorage.receiveEnergy((int) Math.abs(getSpeed() * Config.generatorGeneratesEnergyMultiplier), false);
     }
 }

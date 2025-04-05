@@ -1,23 +1,27 @@
 package dev.hail.create_simple_generator;
 
 import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.Create;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 import java.util.function.Consumer;
 
+import static dev.hail.create_simple_generator.CreateSimpleGenerator.MODID;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class StressGeneratorVisual extends KineticBlockEntityVisual<StressGeneratorEntity> {
     protected final RotatingInstance shaft;
-    protected final RotatingInstance fan;
+    protected final RotatingInstance coil;
     final Direction direction;
     private final Direction opposite;
 
@@ -27,9 +31,11 @@ public class StressGeneratorVisual extends KineticBlockEntityVisual<StressGenera
         direction = blockState.getValue(FACING);
 
         opposite = direction.getOpposite();
-        shaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+        shaft = instancerProvider()
+                .instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
                 .createInstance();
-        fan = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.ENCASED_FAN_INNER))
+        coil = instancerProvider()
+                .instancer(AllInstanceTypes.ROTATING, Models.partial(StressGeneratorCoilModel.STRESS_GENERATOR_COIL))
                 .createInstance();
 
         shaft.setup(blockEntity)
@@ -37,7 +43,7 @@ public class StressGeneratorVisual extends KineticBlockEntityVisual<StressGenera
                 .rotateToFace(Direction.SOUTH, opposite)
                 .setChanged();
 
-        fan.setup(blockEntity, getFanSpeed())
+        coil.setup(blockEntity, getFanSpeed())
                 .setPosition(getVisualPosition())
                 .rotateToFace(Direction.SOUTH, opposite)
                 .setChanged();
@@ -56,7 +62,7 @@ public class StressGeneratorVisual extends KineticBlockEntityVisual<StressGenera
     public void update(float pt) {
         shaft.setup(blockEntity)
                 .setChanged();
-        fan.setup(blockEntity, getFanSpeed())
+        coil.setup(blockEntity, getFanSpeed())
                 .setChanged();
     }
 
@@ -66,18 +72,18 @@ public class StressGeneratorVisual extends KineticBlockEntityVisual<StressGenera
         relight(behind, shaft);
 
         BlockPos inFront = pos.relative(direction);
-        relight(inFront, fan);
+        relight(inFront, coil);
     }
 
     @Override
     protected void _delete() {
         shaft.delete();
-        fan.delete();
+        coil.delete();
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
         consumer.accept(shaft);
-        consumer.accept(fan);
+        consumer.accept(coil);
     }
 }

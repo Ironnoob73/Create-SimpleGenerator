@@ -3,10 +3,12 @@ package dev.hail.create_simple_generator;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -19,6 +21,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -37,7 +41,8 @@ public class CreateSimpleGenerator
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     public static final BlockEntry<StressGeneratorBlock> STRESS_GENERATOR_BLOCK = REGISTRATE.block("stress_generator", StressGeneratorBlock::new)
-            .onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> 1.0))
+            .onRegister((block) -> BlockStressValues.IMPACTS.register(block, () -> Config.generatorConsumptionStressMultiplier))
+            .initialProperties(SharedProperties::stone)
             .register();
     public static final BlockEntityEntry<StressGeneratorEntity> STRESS_GENERATOR_ENTITY = REGISTRATE
             .blockEntity("stress_generator", StressGeneratorEntity::new)
@@ -47,13 +52,11 @@ public class CreateSimpleGenerator
             .register();
     public static final DeferredItem<BlockItem> STRESS_GENERATOR_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("stress_generator", STRESS_GENERATOR_BLOCK);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.examplemod"))
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.create_simple_generator"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> STRESS_GENERATOR_BLOCK_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(STRESS_GENERATOR_BLOCK_ITEM.get());
-            }).build());
+            .displayItems((parameters, output) -> output.accept(STRESS_GENERATOR_BLOCK_ITEM.get())).build());
 
     public CreateSimpleGenerator(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -67,7 +70,8 @@ public class CreateSimpleGenerator
 
         modEventBus.addListener(this::addCreative);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -89,6 +93,10 @@ public class CreateSimpleGenerator
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            StressGeneratorCoilModel.init();
         }
+    }
+    public static ResourceLocation resourceLocation(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }
