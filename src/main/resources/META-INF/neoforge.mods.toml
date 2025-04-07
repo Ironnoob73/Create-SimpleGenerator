@@ -11,20 +11,23 @@ authors="${mod_authors}"
 description='''${mod_description}'''
 config="${mod_id}.mixins.json"
 
-[[dependencies.neoforge]]
-    type="required"
-    versionRange="${neo_version_range}"
-    ordering="NONE"
-    side="BOTH"
+[[dependencies.create_simple_generator]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
 
-[[dependencies.minecraft]]
-    type="required"
-    versionRange="${minecraft_version_range}"
-    ordering="NONE"
-    side="BOTH"
+[[dependencies.create_simple_generator]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
 
-[[dependencies.create]]
-    type="required"
-    versionRange="[6.0,)"
-    ordering="AFTER"
-    side="BOTH"
+[[dependencies.create_simple_generator]]
+modId="create"
+type="required"
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"
