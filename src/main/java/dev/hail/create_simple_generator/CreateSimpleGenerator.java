@@ -54,7 +54,6 @@ public class CreateSimpleGenerator {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.create_simple_generator"))
-            .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> STRESS_GENERATOR_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> output.accept(STRESS_GENERATOR_BLOCK_ITEM.get())).build());
 
