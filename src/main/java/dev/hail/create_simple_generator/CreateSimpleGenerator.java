@@ -16,6 +16,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -32,8 +33,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 @Mod(CreateSimpleGenerator.MODID)
-public class CreateSimpleGenerator
-{
+public class CreateSimpleGenerator {
     public static final String MODID = "create_simple_generator";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
@@ -71,7 +71,7 @@ public class CreateSimpleGenerator
         modEventBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
-        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

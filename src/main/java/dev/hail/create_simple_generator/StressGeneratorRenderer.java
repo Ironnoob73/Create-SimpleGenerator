@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 
+import java.util.Objects;
+
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class StressGeneratorRenderer extends KineticBlockEntityRenderer<StressGeneratorEntity> {
@@ -30,7 +32,7 @@ public class StressGeneratorRenderer extends KineticBlockEntityRenderer<StressGe
                 .getValue(FACING);
         VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
 
-        int lightBehind = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().relative(direction.getOpposite()));
+        int lightBehind = LevelRenderer.getLightColor(Objects.requireNonNull(be.getLevel()), be.getBlockPos().relative(direction.getOpposite()));
         int lightInFront = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().relative(direction));
 
         SuperByteBuffer shaftHalf =
