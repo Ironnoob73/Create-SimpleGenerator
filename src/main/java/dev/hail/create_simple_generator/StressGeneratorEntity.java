@@ -28,9 +28,9 @@ public class StressGeneratorEntity extends KineticBlockEntity{
         boolean justExtracted;
 
         if (level != null) {
-            energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().relative(face), face);
+            energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().relative(face), face.getOpposite());
             itemStorage = HopperBlockEntity.getContainerAt(level, getBlockPos().relative(face));
-            singleItemStorage = level.getCapability(Capabilities.ItemHandler.BLOCK, getBlockPos().relative(face), face);
+            singleItemStorage = level.getCapability(Capabilities.ItemHandler.BLOCK, getBlockPos().relative(face), face.getOpposite());
         }
         justExtracted = extractPowerTo(energyStorage);
         if (itemStorage != null && !justExtracted) {
@@ -55,9 +55,9 @@ public class StressGeneratorEntity extends KineticBlockEntity{
 
     public boolean extractPowerTo (IEnergyStorage energyStorage){
         if (energyStorage != null && (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored() || energyStorage.getMaxEnergyStored() == 0)){
-                energyStorage.receiveEnergy((int) Math.abs(getSpeed() * Config.generatorGeneratesEnergyMultiplier), false);
-                return true;
-            }
+            energyStorage.receiveEnergy((int) Math.abs(getSpeed() * Config.generatorGeneratesEnergyMultiplier), false);
+            return true;
+        }
         return false;
     }
 }
