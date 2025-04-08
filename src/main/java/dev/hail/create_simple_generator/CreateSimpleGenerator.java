@@ -56,7 +56,7 @@ public class CreateSimpleGenerator {
             .icon(() -> STRESS_GENERATOR_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> output.accept(STRESS_GENERATOR_BLOCK_ITEM.get())).build());
 
-    public CreateSimpleGenerator(IEventBus modEventBus, ModContainer modContainer)
+    public CreateSimpleGenerator(IEventBus modEventBus)
     {
         modEventBus.addListener(this::commonSetup);
 
