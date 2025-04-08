@@ -15,19 +15,19 @@ config="${mod_id}.mixins.json"
 modId="neoforge"
 type="required"
 versionRange="${neo_version_range}"
-ordering="AFTER"
+ordering="NONE"
 side="BOTH"
 
 [[dependencies.create_simple_generator]]
 modId="minecraft"
 type="required"
 versionRange="${minecraft_version_range}"
-ordering="AFTER"
+ordering="NONE"
 side="BOTH"
 
 [[dependencies.create_simple_generator]]
 modId="create"
 type="required"
 versionRange="[6.0,)"
-ordering="AFTER"
+ordering="NONE"
 side="BOTH"
