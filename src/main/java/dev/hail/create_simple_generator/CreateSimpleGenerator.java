@@ -67,13 +67,11 @@ public class CreateSimpleGenerator {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
-
-        modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event)
@@ -91,6 +89,7 @@ public class CreateSimpleGenerator {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
             StressGeneratorCoilModel.init();
         }
     }
