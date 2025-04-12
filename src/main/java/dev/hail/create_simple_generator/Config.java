@@ -20,7 +20,7 @@ public class Config
     public static double generatorConsumptionStressMultiplier;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event)
+    static void onLoad(final ModConfigEvent.Loading event)
     {
         if (event.getConfig().getSpec() == SPEC_S) {
             generatorGeneratesEnergyMultiplier = GENERATOR_GENERATES_ENERGY_MULTIPLIER.get();
