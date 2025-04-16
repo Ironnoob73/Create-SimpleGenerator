@@ -9,27 +9,33 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
+
+import java.util.Arrays;
 
 @Mod(CreateSimpleGenerator.MODID)
 public class CreateSimpleGenerator {
@@ -51,7 +57,7 @@ public class CreateSimpleGenerator {
             .register();
     public static final DeferredItem<BlockItem> STRESS_GENERATOR_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("stress_generator", STRESS_GENERATOR_BLOCK);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("create_simple_generator_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.create_simple_generator"))
             .icon(() -> STRESS_GENERATOR_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> output.accept(STRESS_GENERATOR_BLOCK_ITEM.get())).build());
@@ -67,6 +73,8 @@ public class CreateSimpleGenerator {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
+
+        modEventBus.addListener(this::registerCapabilities);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -93,6 +101,15 @@ public class CreateSimpleGenerator {
             StressGeneratorCoilModel.init();
         }
     }
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event){
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                STRESS_GENERATOR_ENTITY.get(),
+                (blockEntity,side)-> blockEntity.getEnergyStored()
+        );
+    }
+
     public static ResourceLocation resourceLocation(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }

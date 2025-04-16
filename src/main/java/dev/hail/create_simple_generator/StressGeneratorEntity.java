@@ -3,15 +3,18 @@ package dev.hail.create_simple_generator;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 
 public class StressGeneratorEntity extends KineticBlockEntity{
+    private final EnergyStorage energyStorage = new EnergyStorage(0);
     public StressGeneratorEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
     }
@@ -59,5 +62,9 @@ public class StressGeneratorEntity extends KineticBlockEntity{
             return true;
         }
         return false;
+    }
+
+    public EnergyStorage getEnergyStored() {
+        return energyStorage;
     }
 }
