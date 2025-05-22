@@ -46,7 +46,7 @@ public class CreateSimpleGenerator {
             .register();
     public static final BlockEntityEntry<StressGeneratorEntity> STRESS_GENERATOR_ENTITY = REGISTRATE
             .blockEntity("stress_generator", StressGeneratorEntity::new)
-            .visual(() -> StressGeneratorVisual::new, false)
+            .visual(() -> StressGeneratorVisual::new, true)
             .validBlocks(STRESS_GENERATOR_BLOCK)
             .renderer(() -> StressGeneratorRenderer::new)
             .register();
@@ -61,9 +61,9 @@ public class CreateSimpleGenerator {
     {
         modEventBus.addListener(this::commonSetup);
 
+        REGISTRATE.registerEventListeners(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
-        REGISTRATE.registerEventListeners(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
