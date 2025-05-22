@@ -58,7 +58,7 @@ public class StressGeneratorBlock extends DirectionalKineticBlock implements IBE
 
     @Override
     public BlockEntityType<? extends StressGeneratorEntity> getBlockEntityType() {
-        return CreateSimpleGenerator.STRESS_GENERATOR_ENTITY.get();
+        return CSGContents.STRESS_GENERATOR_ENTITY.get();
     }
 
 }
