@@ -13,6 +13,7 @@ public class CSGCreativeTab {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("create_simple_generator_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.create_simple_generator"))
             .icon(CSGContents.STRESS_GENERATOR_BLOCK::asStack)
+            .displayItems((parameters, output) -> output.accept(CSGContents.STRESS_GENERATOR_BLOCK))
             .build());
 
     public static void init(IEventBus modEventBus) {

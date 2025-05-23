@@ -42,23 +42,12 @@ public class CreateSimpleGenerator {
         CSGContents.init();
         CSGCreativeTab.init(modEventBus);
 
-        modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerCapabilities);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
-    }
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey().equals(CSGCreativeTab.TAB.getKey())) {
-            for (RegistryEntry<Block, Block> entry : REGISTRATE.getAll(Registries.BLOCK)) {
-                var block = entry.get();
-                var stack = block.asItem().getDefaultInstance();
-                if (block.asItem() == Items.AIR) continue;
-                event.accept(stack);
-            }
-        }
     }
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
