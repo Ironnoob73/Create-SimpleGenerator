@@ -2,23 +2,21 @@ package dev.hail.create_simple_generator;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import net.createmod.catnip.config.ui.ConfigScreen;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 @Mod(CreateSimpleGenerator.MODID)
@@ -28,43 +26,37 @@ public class CreateSimpleGenerator {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
-    public CreateSimpleGenerator(IEventBus modEventBus)
-    {
+    @SuppressWarnings("removal")
+    public CreateSimpleGenerator() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
+
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         REGISTRATE.setCreativeTab(CSGCreativeTab.TAB);
         CSGContents.init();
         CSGCreativeTab.init(modEventBus);
-
-        modEventBus.addListener(this::registerCapabilities);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, Config.SPEC_S);
     }
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
     }
 
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
+        @SuppressWarnings("removal")
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> ConfigScreen::new);
         }
-    }
-
-    private void registerCapabilities(RegisterCapabilitiesEvent event){
-        event.registerBlockEntity(
-                Capabilities.EnergyStorage.BLOCK,
-                CSGContents.STRESS_GENERATOR_ENTITY.get(),
-                (blockEntity,side)-> blockEntity.getEnergyStored()
-        );
     }
 
     public static ResourceLocation resourceLocation(String path) {

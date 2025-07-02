@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "c:plates/copper"
+      "tag": "forge:plates/copper"
     },
     "R": {
-      "tag": "c:dusts/redstone"
+      "tag": "forge:dusts/redstone"
     },
     "I": {
-      "tag": "c:plates/iron"
+      "tag": "forge:plates/iron"
     },
     "#": {
       "item": "create:andesite_casing"
@@ -25,6 +25,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "create_simple_generator:stress_generator"
+    "item": "create_simple_generator:stress_generator"
   }
 }

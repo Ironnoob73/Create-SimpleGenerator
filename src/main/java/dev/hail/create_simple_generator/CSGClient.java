@@ -1,11 +1,11 @@
 package dev.hail.create_simple_generator;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod(value = CreateSimpleGenerator.MODID, dist = Dist.CLIENT)
+@Mod.EventBusSubscriber(Dist.CLIENT)
 public class CSGClient {
     public CSGClient(IEventBus modEventBus) {
         StressGeneratorCoilModel.init();
