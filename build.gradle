@@ -97,6 +97,10 @@ dependencies {
     implementation fg.deobf("io.github.llamalad7:mixinextras-forge:0.4.1")
 
     annotationProcessor fg.deobf("org.spongepowered:mixin:${mixin_version}:processor")
+
+    runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:6629570")
+    runtimeOnly fg.deobf("curse.maven:guideme-1173950:6679102")
+    runtimeOnly fg.deobf("curse.maven:building-gadgets-298187:4843616")
 }
 
 mixin {

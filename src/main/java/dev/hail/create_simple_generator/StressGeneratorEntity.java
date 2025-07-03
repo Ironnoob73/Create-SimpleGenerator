@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +22,7 @@ public class StressGeneratorEntity extends KineticBlockEntity{
     LazyOptional<IEnergyStorage> lazyHandler;
     public StressGeneratorEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
+        lazyHandler = LazyOptional.of(() -> energyStorage);
     }
 
     @Override
@@ -37,15 +39,19 @@ public class StressGeneratorEntity extends KineticBlockEntity{
             return;
         }
         Direction face = getBlockState().getValue(StressGeneratorBlock.FACING);
+        BlockPos pos = this.worldPosition.relative(face);
         IEnergyStorage energyStorage = null;
         Container itemStorage = null;
         IItemHandler singleItemStorage = null;
         boolean justExtracted;
 
         if (level != null) {
-            energyStorage = level.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null);
-            itemStorage = HopperBlockEntity.getContainerAt(level, getBlockPos().relative(face));
-            singleItemStorage = level.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite()).orElse(null);
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be != null) {
+                energyStorage = be.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null);
+                itemStorage = HopperBlockEntity.getContainerAt(level, getBlockPos().relative(face));
+                singleItemStorage = be.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite()).orElse(null);
+            }
         }
         justExtracted = extractPowerTo(energyStorage);
         if (itemStorage != null && !justExtracted) {
