@@ -4,10 +4,15 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -55,7 +60,7 @@ public class StressGeneratorEntity extends KineticBlockEntity{
             if (be != null) {
                 energyStorage = be.getCapability(ForgeCapabilities.ENERGY, face.getOpposite()).orElse(null);
                 itemStorage = HopperBlockEntity.getContainerAt(level, getBlockPos().relative(face));
-                singleItemStorage = be.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite()).orElse(null);
+                itemHandler = be.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite()).orElse(null);
             }
         }
         justExtracted = extractPowerTo(energyStorage);
@@ -74,7 +79,7 @@ public class StressGeneratorEntity extends KineticBlockEntity{
                     null, new AABB(getBlockPos().relative(face)).expandTowards(Vec3.atLowerCornerOf(face.getNormal()).scale(0)));
             for (Entity entity : caughtEntities) {
                 if (entity instanceof ItemEntity itemEntity && Config.canChargeItemEntity) {
-                    energyStorage = itemEntity.getItem().getCapability(Capabilities.EnergyStorage.ITEM);
+                    energyStorage = itemEntity.getItem().getCapability(ForgeCapabilities.ENERGY).orElse(null);
                     justExtracted = extractPowerTo(energyStorage);
                     if (justExtracted) {
                         return;
@@ -87,8 +92,8 @@ public class StressGeneratorEntity extends KineticBlockEntity{
                             return;
                         }
                     }
-                    itemHandler = entity.getCapability(Capabilities.ItemHandler.ENTITY);
-                    if (itemHandler != null && forItemInStorage(itemHandler)){
+                    itemHandler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+                    if (forItemInStorage(itemHandler)){
                         return;
                     }
                 }
@@ -99,15 +104,18 @@ public class StressGeneratorEntity extends KineticBlockEntity{
     public boolean forItemInStorage (IItemHandler itemHandler){
         boolean justExtracted;
         for (int i = 0; i < itemHandler.getSlots(); i++ ){
-            IEnergyStorage energyStorage = itemHandler.getStackInSlot(i).getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = itemHandler.getStackInSlot(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
             justExtracted = extractPowerTo(energyStorage);
-            if (justExtracted){
+            if (justExtracted) {
                 return true;
+            }
+        }
+        return false;
     }
     public boolean forItemInStorage (Container itemStorage){
         boolean justExtracted;
         for (int i = 0; i < itemStorage.getContainerSize(); i++ ){
-            IEnergyStorage energyStorage = itemStorage.getItem(i).getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = itemStorage.getItem(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
             justExtracted = extractPowerTo(energyStorage);
             if (justExtracted){
                 return true;

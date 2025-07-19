@@ -13,11 +13,11 @@ public class Config {
             .defineInRange("generator_generates_energy_multiplier", 1D, 0D, Double.MAX_VALUE);
     private static final ForgeConfigSpec.DoubleValue GENERATOR_CONSUMPTION_STRESS_MULTIPLIER = BUILDER_S
             .defineInRange("generator_consumption_stress_multiplier", 1D, 0D, Double.MAX_VALUE);
-    private static final ModConfigSpec.BooleanValue CAN_CHARGE_ITEM_IN_BLOCK = BUILDER_S
+    private static final ForgeConfigSpec.BooleanValue CAN_CHARGE_ITEM_IN_BLOCK = BUILDER_S
             .define("can_charge_item_in_block", true);
-    private static final ModConfigSpec.BooleanValue CAN_CHARGE_ITEM_ENTITY = BUILDER_S
+    private static final ForgeConfigSpec.BooleanValue CAN_CHARGE_ITEM_ENTITY = BUILDER_S
             .define("can_charge_item_entity", true);
-    private static final ModConfigSpec.BooleanValue CAN_CHARGE_ITEM_IN_ENTITY = BUILDER_S
+    private static final ForgeConfigSpec.BooleanValue CAN_CHARGE_ITEM_IN_ENTITY = BUILDER_S
             .define("can_charge_item_in_entity", true);
     static final ForgeConfigSpec SPEC_S = BUILDER_S.build();
 
