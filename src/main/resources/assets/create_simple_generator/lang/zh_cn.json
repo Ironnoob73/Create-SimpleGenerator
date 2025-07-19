@@ -2,5 +2,13 @@
   "itemGroup.create_simple_generator": "机械动力：简单发电机",
   "block.create_simple_generator.stress_generator": "应力发电机",
   "create_simple_generator.configuration.generator_generates_energy_multiplier": "发电机产能倍率",
-  "create_simple_generator.configuration.generator_consumption_stress_multiplier": "发电机应力消耗倍率"
+  "create_simple_generator.configuration.generator_generates_energy_multiplier.tooltip": "\u00A7e需要重新进入存档",
+  "create_simple_generator.configuration.generator_consumption_stress_multiplier": "发电机应力消耗倍率",
+  "create_simple_generator.configuration.generator_consumption_stress_multiplier.tooltip": "\u00A7e需要重新进入存档",
+  "create_simple_generator.configuration.can_charge_item_in_block": "可为方块容器内物品充电",
+  "create_simple_generator.configuration.can_charge_item_in_block.tooltip": "\u00A7e需要重新进入存档",
+  "create_simple_generator.configuration.can_charge_item_entity": "可为掉落物充电",
+  "create_simple_generator.configuration.can_charge_item_entity.tooltip": "\u00A7e需要重新进入存档",
+  "create_simple_generator.configuration.can_charge_item_in_entity": "可为实体背包内的物品充电",
+  "create_simple_generator.configuration.can_charge_item_in_entity.tooltip": "\u00A7e需要重新进入存档"
 }
