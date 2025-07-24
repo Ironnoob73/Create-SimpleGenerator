@@ -67,10 +67,10 @@ public class StressGeneratorEntity extends KineticBlockEntity{
         if (justExtracted){
             return;
         }
-        if (itemStorage != null && Config.canChargeItemInBlock && forItemInStorage(itemStorage)){
+        if (Config.canChargeItemInBlock && forItemInStorage(itemStorage)){
             return;
         }
-        if (itemHandler != null && Config.canChargeItemInBlock && forItemInStorage(itemHandler)){
+        if (Config.canChargeItemInBlock && forItemInStorage(itemHandler)){
             return;
         }
         if (Config.canChargeItemEntity || Config.canChargeItemInEntity){
@@ -116,11 +116,13 @@ public class StressGeneratorEntity extends KineticBlockEntity{
     }
     public boolean forItemInStorage (Container itemStorage){
         boolean justExtracted;
-        for (int i = 0; i < itemStorage.getContainerSize(); i++ ){
-            IEnergyStorage energyStorage = itemStorage.getItem(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
-            justExtracted = extractPowerTo(energyStorage);
-            if (justExtracted){
-                return true;
+        if (itemStorage != null){
+            for (int i = 0; i < itemStorage.getContainerSize(); i++ ){
+                IEnergyStorage energyStorage = itemStorage.getItem(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
+                justExtracted = extractPowerTo(energyStorage);
+                if (justExtracted){
+                    return true;
+                }
             }
         }
         return false;
