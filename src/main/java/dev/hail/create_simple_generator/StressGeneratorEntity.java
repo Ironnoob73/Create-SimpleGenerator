@@ -103,11 +103,13 @@ public class StressGeneratorEntity extends KineticBlockEntity{
 
     public boolean forItemInStorage (IItemHandler itemHandler){
         boolean justExtracted;
-        for (int i = 0; i < itemHandler.getSlots(); i++ ){
-            IEnergyStorage energyStorage = itemHandler.getStackInSlot(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
-            justExtracted = extractPowerTo(energyStorage);
-            if (justExtracted) {
-                return true;
+        if (itemHandler != null){
+            for (int i = 0; i < itemHandler.getSlots(); i++ ){
+                IEnergyStorage energyStorage = itemHandler.getStackInSlot(i).getCapability(ForgeCapabilities.ENERGY).orElse(null);
+                justExtracted = extractPowerTo(energyStorage);
+                if (justExtracted) {
+                    return true;
+                }
             }
         }
         return false;

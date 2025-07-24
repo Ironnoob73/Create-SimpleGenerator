@@ -79,6 +79,7 @@ repositories {
     }
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.ithundxr.dev/mirror" } // Registrate
+    maven { url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -101,6 +102,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:6629570")
     runtimeOnly fg.deobf("curse.maven:guideme-1173950:6679102")
     runtimeOnly fg.deobf("curse.maven:building-gadgets-298187:4843616")
+    runtimeOnly fg.deobf("maven.modrinth:iron-furnaces:4.1.6")
 }
 
 mixin {
